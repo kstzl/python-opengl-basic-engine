@@ -8,7 +8,7 @@ class MapGenerator:
         if 0 <= x < self.sx and 0 <= y < self.sy:
             return self.level[x + y * self.sy]
         return 0
-    
+
     def parse(self):
         actors = {"floors": [], "walls": []}
         for x in range(self.sx):
@@ -35,49 +35,3 @@ class MapGenerator:
                         actors["walls"].append((x, y + 0.5, 0))
 
         return actors
-
-
-if __name__ == "__main__":
-
-    level = [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-    ]
-
-    mg = MapGenerator(level=level, sx=6, sy=6)
-    result = mg.parse()
-    print(result)

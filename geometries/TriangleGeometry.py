@@ -1,4 +1,3 @@
-import numpy as np
 import OpenGL.GL as GL
 
 from engine.Vao import Vao
@@ -33,7 +32,7 @@ class TriangleGeometry(DrawableActor):
 
     def render(self):
         GL.glDrawArrays(GL.GL_TRIANGLES, 0, self.vtxc.count())
-        
+
     def get_vao(self) -> Vao:
         return self.vao
 

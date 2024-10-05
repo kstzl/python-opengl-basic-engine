@@ -14,7 +14,6 @@ from engine.Material import Material
 from pyrr import Vector3
 
 if __name__ == "__main__":
-
     engine_instance = Engine(window_size=(1920, 1080))
 
     default_shader = ShaderProgram(

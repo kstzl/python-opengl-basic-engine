@@ -4,6 +4,7 @@ from engine.actor.BaseActor import BaseActor
 
 from pyrr import Matrix44
 
+
 class Camera(BaseActor):
     def __init__(self) -> None:
         super().__init__()

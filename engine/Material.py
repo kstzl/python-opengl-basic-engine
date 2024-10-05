@@ -14,6 +14,6 @@ class Material:
         self.shader_program.set_1i_uniform("imageTexture", 0)
 
     def destroy_all(self):
-        print(f"Destroying material ressources :")
+        print("Destroying material ressources :")
         self.shader_program.destroy()
         self.texture.destroy()

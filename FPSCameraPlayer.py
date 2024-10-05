@@ -35,7 +35,6 @@ class FPSCameraPlayer(Camera):
         return anim_matrix @ base_view_matrix
 
     def move(self, additional_vector: Vector3, dt: float):
-
         keys = pg.key.get_pressed()
 
         sprint = 1
@@ -43,7 +42,9 @@ class FPSCameraPlayer(Camera):
         if keys[pg.K_LSHIFT]:
             sprint = 3
 
-        self.position = self.position + additional_vector * self.move_speed * dt * sprint
+        self.position = (
+            self.position + additional_vector * self.move_speed * dt * sprint
+        )
         self.anim_i += dt * 10 * sprint
         self.step_i += dt * 10 * sprint
         self.anim_pos = Vector3([0, -0.1 + math.cos(self.anim_i) * 0.03, 0])
