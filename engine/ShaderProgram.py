@@ -22,6 +22,10 @@ class ShaderProgram:
         loc = self.get_uniform_loc(uniform_name)
         GL.glUniformMatrix4fv(loc, 1, GL.GL_FALSE, mtx.astype(np.float32))
 
+    def set_1i_uniform(self, uniform_name, value: int):
+        loc = self.get_uniform_loc(uniform_name)
+        GL.glUniform1i(loc, value)
+
     def get_uniform_loc(self, uniform_name: str):
         return GL.glGetUniformLocation(self.program, uniform_name)
 

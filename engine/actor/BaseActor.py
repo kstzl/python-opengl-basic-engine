@@ -11,7 +11,8 @@ class BaseActor:
 
         self.pitchDeg = 0
         self.yawDeg = 0
-        
+        self.rollDeg = 0
+
     def destroy(self):
         pass
 
@@ -19,9 +20,16 @@ class BaseActor:
         pass
 
     def get_model_matrix(self):
-        position_matrix = Matrix44.from_translation(self.position)
+        pitchRads = math.radians(self.pitchDeg)
+        yawRads = math.radians(self.yawDeg)
+        rollRads = math.radians(self.rollDeg)
 
-        return position_matrix
+        position_matrix = Matrix44.from_translation(self.position)
+        rotation_matrix = Matrix44.from_x_rotation(pitchRads)
+        rotation_matrix = rotation_matrix @ Matrix44.from_y_rotation(yawRads)
+        rotation_matrix = rotation_matrix @ Matrix44.from_z_rotation(rollRads)
+
+        return rotation_matrix @ position_matrix
 
     def get_forward_vector(self, ignore_pitch=False):
 

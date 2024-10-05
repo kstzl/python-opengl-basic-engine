@@ -18,10 +18,10 @@ class Vao:
         stride: any,
         ptr_value: int,
     ):
-        GL.glEnableVertexAttribArray(idx)
         GL.glVertexAttribPointer(
             idx, size, _type, normalized, stride, ct.c_void_p(ptr_value)
         )
+        GL.glEnableVertexAttribArray(idx)
 
     def destroy(self):
         print(f"Destroying Vao({self.vao_id})")

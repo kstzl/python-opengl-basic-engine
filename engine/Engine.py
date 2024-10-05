@@ -4,9 +4,6 @@ import pygame as pg
 
 import OpenGL.GL as GL
 
-from geometries.TriangleGeometry import TriangleGeometry
-from geometries.QuadGeometry import QuadGeometry
-from engine.ShaderProgram import ShaderProgram
 from engine.actor.Camera import Camera
 from engine.actor.DrawableActor import DrawableActor
 
@@ -19,6 +16,7 @@ class Engine:
 
         self.initialize_pygame()
         GL.glEnable(GL.GL_DEPTH_TEST)
+        GL.glEnable(GL.GL_CULL_FACE)
 
         self.clock = pg.time.Clock()
         self.elapsed_time = 0
@@ -28,27 +26,20 @@ class Engine:
         )
 
         self.camera = Camera()
-        self.camera.yawDeg = -90
 
-        self.actors = [TriangleGeometry(), TriangleGeometry(), QuadGeometry()]
-        self.actors[0].position.z -= 1
-        self.actors[1].position.z -= 1
-
-        self.actors[0].position.x += 1
-
-        ## TODO ##
-        self.shader_program = ShaderProgram("./shaders/default.frag", "./shaders/default.vert")
+        self.actors = []
 
     def initialize_pygame(self):
         pg.init()
-
+        pg.mixer.init()
+        
         pg.display.gl_set_attribute(pg.GL_CONTEXT_MAJOR_VERSION, 3)
         pg.display.gl_set_attribute(pg.GL_CONTEXT_MINOR_VERSION, 3)
         pg.display.gl_set_attribute(
             pg.GL_CONTEXT_PROFILE_MASK, pg.GL_CONTEXT_PROFILE_CORE
         )
 
-        pg.display.set_mode(self.window_size, flags=pg.OPENGL | pg.DOUBLEBUF  )
+        pg.display.set_mode(self.window_size, flags=pg.OPENGL | pg.DOUBLEBUF)
 
         pg.event.set_grab(True)
         pg.mouse.set_visible(False)
@@ -66,8 +57,9 @@ class Engine:
 
     def cleanup(self):
         for actor in self.actors:
+            if isinstance(actor, DrawableActor):
+                actor.material.destroy_all()
             actor.destroy()
-        self.shader_program.destroy()
 
     def run(self):
         while True:
@@ -93,17 +85,23 @@ class Engine:
     def render(self, dt: float):
         GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
-        self.shader_program.use()
-        self.shader_program.set_matrix4fv_uniform("viewMatrix", self.camera.get_view_matrix())
-        self.shader_program.set_matrix4fv_uniform("projectionMatrix", self.projection_matrix)
-
         for actor in self.actors:
             if isinstance(actor, DrawableActor):
+                actor.material.use()
+
+                actor.material.shader_program.set_matrix4fv_uniform(
+                    "viewMatrix", self.camera.get_view_matrix()
+                )
+                actor.material.shader_program.set_matrix4fv_uniform(
+                    "projectionMatrix", self.projection_matrix
+                )
                 actor_vao = actor.get_vao()
                 actor_vao.bind()
 
                 position_matrix = actor.get_model_matrix()
-                self.shader_program.set_matrix4fv_uniform("modelMatrix", position_matrix)
+                actor.material.shader_program.set_matrix4fv_uniform(
+                    "modelMatrix", position_matrix
+                )
 
                 GL.glDrawArrays(GL.GL_TRIANGLES, 0, 6)
 
