@@ -5,8 +5,10 @@ import pygame as pg
 import OpenGL.GL as GL
 
 from geometries.TriangleGeometry import TriangleGeometry
-from engine.Shader import Shader
+from geometries.QuadGeometry import QuadGeometry
+from engine.ShaderProgram import ShaderProgram
 from engine.actor.Camera import Camera
+from engine.actor.DrawableActor import DrawableActor
 
 from pyrr import Matrix44
 
@@ -16,6 +18,7 @@ class Engine:
         self.window_size = window_size
 
         self.initialize_pygame()
+        GL.glEnable(GL.GL_DEPTH_TEST)
 
         self.clock = pg.time.Clock()
         self.elapsed_time = 0
@@ -27,9 +30,14 @@ class Engine:
         self.camera = Camera()
         self.camera.yawDeg = -90
 
+        self.actors = [TriangleGeometry(), TriangleGeometry(), QuadGeometry()]
+        self.actors[0].position.z -= 1
+        self.actors[1].position.z -= 1
+
+        self.actors[0].position.x += 1
+
         ## TODO ##
-        self.geo = TriangleGeometry()
-        self.shader = Shader("./shaders/default.frag", "./shaders/default.vert")
+        self.shader_program = ShaderProgram("./shaders/default.frag", "./shaders/default.vert")
 
     def initialize_pygame(self):
         pg.init()
@@ -40,7 +48,7 @@ class Engine:
             pg.GL_CONTEXT_PROFILE_MASK, pg.GL_CONTEXT_PROFILE_CORE
         )
 
-        pg.display.set_mode(self.window_size, flags=pg.OPENGL | pg.DOUBLEBUF)
+        pg.display.set_mode(self.window_size, flags=pg.OPENGL | pg.DOUBLEBUF  )
 
         pg.event.set_grab(True)
         pg.mouse.set_visible(False)
@@ -52,12 +60,18 @@ class Engine:
             if event.type == pg.QUIT or (
                 event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE
             ):
+                self.cleanup()
                 pg.quit()
                 sys.exit()
 
+    def cleanup(self):
+        for actor in self.actors:
+            actor.destroy()
+        self.shader_program.destroy()
+
     def run(self):
         while True:
-            dt: float = self.clock.tick(60) / 1000
+            dt: float = self.clock.tick(120) / 1000
 
             self.process_events()
             self.execute_actors(dt)
@@ -73,17 +87,24 @@ class Engine:
     def execute_actors(self, dt: float):
         self.camera.execute(dt)
 
+        for actor in self.actors:
+            actor.execute(dt)
+
     def render(self, dt: float):
         GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
-        self.shader.use()
-        self.geo.vao.bind()
+        self.shader_program.use()
+        self.shader_program.set_matrix4fv_uniform("viewMatrix", self.camera.get_view_matrix())
+        self.shader_program.set_matrix4fv_uniform("projectionMatrix", self.projection_matrix)
 
-        pos_matrix = Matrix44.from_translation([0, 0, -1])
-        self.shader.set_matrix4fv_uniform("modelMatrix", pos_matrix)
-        self.shader.set_matrix4fv_uniform("viewMatrix", self.camera.get_view_matrix())
-        self.shader.set_matrix4fv_uniform("projectionMatrix", self.projection_matrix)
+        for actor in self.actors:
+            if isinstance(actor, DrawableActor):
+                actor_vao = actor.get_vao()
+                actor_vao.bind()
 
-        GL.glDrawArrays(GL.GL_TRIANGLES, 0, 3)
+                position_matrix = actor.get_model_matrix()
+                self.shader_program.set_matrix4fv_uniform("modelMatrix", position_matrix)
+
+                GL.glDrawArrays(GL.GL_TRIANGLES, 0, 6)
 
         pg.display.flip()

@@ -11,6 +11,9 @@ class BaseActor:
 
         self.pitchDeg = 0
         self.yawDeg = 0
+        
+    def destroy(self):
+        pass
 
     def execute(self, dt: float):
         pass

@@ -10,7 +10,7 @@ class Camera(BaseActor):
     def __init__(self) -> None:
         super().__init__()
 
-        self.mouse_sensivity = 8
+        self.mouse_sensivity = 10
         self.move_speed = 2
 
     def get_view_matrix(self):
@@ -28,7 +28,7 @@ class Camera(BaseActor):
         self.pitchDeg += rel_y * (-self.mouse_sensivity * dt)
         self.yawDeg += rel_x * (self.mouse_sensivity * dt)
 
-        self.pitchDeg = glm.clamp(self.pitchDeg, -90, 90)
+        self.pitchDeg = glm.clamp(self.pitchDeg, -89, 89)
 
         keys = pg.key.get_pressed()
 

@@ -24,4 +24,5 @@ class Vao:
         )
 
     def destroy(self):
+        print(f"Destroying Vao({self.vao_id})")
         GL.glDeleteVertexArrays(1, (self.vao_id,))

@@ -12,4 +12,5 @@ class Vbo:
         GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo_id)
 
     def destroy(self):
+        print(f"Destroying Vbo({self.vbo_id})")
         GL.glDeleteBuffers(1, (self.vbo_id,))
