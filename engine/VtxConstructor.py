@@ -13,13 +13,16 @@ class VtxConstructor:
         x: float,
         y: float,
         z: float,
+        nx: float,
+        ny: float,
+        nz: float,
         r: float,
         g: float,
         b: float,
         u: float,
         v: float,
     ):
-        self.data += (x, y, z, r, g, b, u, v)
+        self.data += (x, y, z, nx, ny, nz, r, g, b, u, v)
         self.vtx_count += 1
 
     def as_np_f32_array(self):

@@ -22,7 +22,7 @@ class Engine:
         self.elapsed_time = 0
 
         self.projection_matrix = Matrix44.perspective_projection(
-            90, self.window_size[0] / self.window_size[1], 0.1, 1000.0
+            110, self.window_size[0] / self.window_size[1], 0.1, 1000.0
         )
 
         self.camera = Camera()
@@ -32,7 +32,7 @@ class Engine:
     def initialize_pygame(self):
         pg.init()
         pg.mixer.init()
-        
+
         pg.display.gl_set_attribute(pg.GL_CONTEXT_MAJOR_VERSION, 3)
         pg.display.gl_set_attribute(pg.GL_CONTEXT_MINOR_VERSION, 3)
         pg.display.gl_set_attribute(

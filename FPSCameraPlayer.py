@@ -40,15 +40,15 @@ class FPSCameraPlayer(Camera):
 
         sprint = 1
 
-        if keys[pg.K_LALT]:
-            sprint = 2
+        if keys[pg.K_LSHIFT]:
+            sprint = 3
 
         self.position = self.position + additional_vector * self.move_speed * dt * sprint
         self.anim_i += dt * 10 * sprint
         self.step_i += dt * 10 * sprint
-        self.anim_pos = Vector3([0, math.sin(self.anim_i) * 0.03, 0])
+        self.anim_pos = Vector3([0, -0.1 + math.cos(self.anim_i) * 0.03, 0])
 
-        self.rollDeg = math.sin(self.anim_i / 2) * 0.5
+        self.rollDeg = math.cos(self.anim_i / 1.5) * 0.5
 
         if self.step_i > 6:
             self.step_i = 0
