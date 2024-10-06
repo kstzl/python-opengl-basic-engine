@@ -33,13 +33,13 @@ class ShaderProgram:
         GL.glUseProgram(self.program)
 
     def destroy(self):
-        print(f"Destroying Vertex Shader({self.vertex_shader})")
+        print(f"    - Destroying Vertex Shader({self.vertex_shader})")
         GL.glDeleteShader(self.vertex_shader)
 
-        print(f"Destroying Fragment Shader({self.fragment_shader})")
+        print(f"    - Destroying Fragment Shader({self.fragment_shader})")
         GL.glDeleteShader(self.fragment_shader)
 
-        print(f"Destroying Shader Program({self.program})")
+        print(f"    - Destroying Shader Program({self.program})")
         GL.glDeleteProgram(self.program)
 
     def __get_file_data(self, file_path: str):

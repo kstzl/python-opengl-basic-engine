@@ -1,11 +1,13 @@
-import sys
-
 import pygame as pg
 
 import OpenGL.GL as GL
 
 from engine.actor.Camera import Camera
+from engine.actor.BaseActor import BaseActor
 from engine.actor.DrawableActor import DrawableActor
+from engine.Material import Material
+
+from geometries.QuadGeometry import BaseGeometry
 
 from pyrr import Matrix44
 
@@ -27,7 +29,19 @@ class Engine:
 
         self.camera = Camera()
 
-        self.actors = []
+        self.actors: list[BaseActor] = []
+        self.materials: list[Material] = []
+        self.geometries: list[BaseGeometry] = []
+
+        self.running = False
+
+    def register_material(self, material: Material) -> Material:
+        self.materials.append(material)
+        return material
+
+    def register_geometry(self, geometry: BaseGeometry) -> BaseGeometry:
+        self.geometries.append(geometry)
+        return geometry
 
     def initialize_pygame(self):
         pg.init()
@@ -51,18 +65,20 @@ class Engine:
             if event.type == pg.QUIT or (
                 event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE
             ):
-                self.cleanup()
-                pg.quit()
-                sys.exit()
+                self.running = False
 
     def cleanup(self):
-        for actor in self.actors:
-            if isinstance(actor, DrawableActor):
-                actor.material.destroy_all()
-            actor.destroy()
+        print("Destroying Geometries ...")
+        for geometry in self.geometries:
+            geometry.destroy()
+
+        print("Destroying Materials ...")
+        for material in self.materials:
+            material.destroy_all()
 
     def run(self):
-        while True:
+        self.running = True
+        while self.running:
             dt: float = self.clock.tick(120) / 1000
 
             self.process_events()
@@ -70,6 +86,9 @@ class Engine:
 
             self.render(dt)
             self.check_for_gl_error()
+
+        self.cleanup()
+        pg.quit()
 
     def check_for_gl_error(self):
         error = GL.glGetError()
@@ -95,14 +114,12 @@ class Engine:
                 actor.material.shader_program.set_matrix4fv_uniform(
                     "projectionMatrix", self.projection_matrix
                 )
-                actor_vao = actor.get_vao()
-                actor_vao.bind()
 
                 position_matrix = actor.get_model_matrix()
                 actor.material.shader_program.set_matrix4fv_uniform(
                     "modelMatrix", position_matrix
                 )
 
-                GL.glDrawArrays(GL.GL_TRIANGLES, 0, 6)
+                actor.geometry.render()
 
         pg.display.flip()

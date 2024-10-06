@@ -12,7 +12,7 @@ class FPSCameraPlayer(Camera):
     def __init__(self) -> None:
         super().__init__()
 
-        self.mouse_sensivity = 10
+        self.mouse_sensivity = 0.3
         self.move_speed = 1
         self.anim_i = 0
 
@@ -49,7 +49,7 @@ class FPSCameraPlayer(Camera):
         self.step_i += dt * 10 * sprint
         self.anim_pos = Vector3([0, -0.1 + math.cos(self.anim_i) * 0.03, 0])
 
-        self.rollDeg = math.cos(self.anim_i / 1.5) * 0.5
+        self.rollDeg = math.cos(self.anim_i / 2) * 0.25
 
         if self.step_i > 6:
             self.step_i = 0
@@ -59,8 +59,8 @@ class FPSCameraPlayer(Camera):
     def execute(self, dt: float):
         rel_x, rel_y = pg.mouse.get_rel()
 
-        self.pitchDeg += rel_y * (-self.mouse_sensivity * dt)
-        self.yawDeg += rel_x * (self.mouse_sensivity * dt)
+        self.pitchDeg += rel_y * -self.mouse_sensivity
+        self.yawDeg += rel_x * self.mouse_sensivity
 
         self.pitchDeg = glm.clamp(self.pitchDeg, -89, 89)
 
