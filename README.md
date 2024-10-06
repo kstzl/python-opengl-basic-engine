@@ -1,5 +1,5 @@
 # Python OpenGL Basic Engine
-![alt text](image.gif)
+![alt text](game-preview.gif)
 
 ## Introduction
 
