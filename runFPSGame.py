@@ -16,7 +16,7 @@ from engine.actor.DrawableActor import DrawableActor
 from pyrr import Vector3
 
 if __name__ == "__main__":
-    engine_instance = Engine(window_size=(900, 700))
+    engine_instance = Engine(window_size=(1920, 1080))
 
     default_geometry = engine_instance.register_geometry(QuadGeometry())
 
@@ -86,10 +86,10 @@ if __name__ == "__main__":
 
     drone_snd = pg.mixer.Sound("./assets/sounds/drone.wav")
     drone_snd.set_volume(0.1)
-    # drone_snd.play()
+    drone_snd.play()
 
     clock_snd = pg.mixer.Sound("./assets/sounds/clock.wav")
     clock_snd.set_volume(0.1)
-    # clock_snd.play()
+    clock_snd.play()
 
     engine_instance.run()

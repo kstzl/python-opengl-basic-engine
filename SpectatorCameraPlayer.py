@@ -1,10 +1,10 @@
 import pygame as pg
+import openal as AL
 import glm
 
 from engine.actor.Camera import Camera
 
 from pyrr import Vector3
-from openal import *
 
 class SpectatorCameraPlayer(Camera):
     def __init__(self) -> None:
@@ -15,7 +15,7 @@ class SpectatorCameraPlayer(Camera):
         self.velx = 0
         self.vely = 0
 
-        self.whoosh_sound = oalOpen("./assets/sounds/fling_whoosh.wav")
+        self.whoosh_sound = AL.oalOpen("./assets/sounds/fling_whoosh.wav")
         self.whoosh_sound.play()
         self.whoosh_sound.set_looping(True)
 

@@ -15,7 +15,9 @@ pip install -r requirements.txt
 ```bash
 python ./runFPSGame.py
 ```
-Controls : W A S D
+Controls :
+- Move : W A S D
+- Sprint : ALT
 
 ## Running the Batch Rendering Test Game
 ![Batch Rendering](images/batch-rendering-game.png)
@@ -23,4 +25,6 @@ Controls : W A S D
 python ./runBatchRenderingTests.py
 ```
 
-Controls : W A S D
+Controls :
+- Move : W A S D
+- Sprint : ALT

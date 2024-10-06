@@ -8,7 +8,7 @@ from engine.Texture import Texture
 from engine.Material import Material
 from engine.actor.DrawableActor import DrawableActor
 
-from openal import *
+import openal as AL
 
 from pyrr import Vector3
 
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     engine_instance.camera.position = Vector3([0, 0.6, 0])
     engine_instance.camera.yawDeg = 90
 
-    drone_sound = oalOpen("./assets/sounds/drone2.wav")
+    drone_sound = AL.oalOpen("./assets/sounds/drone2.wav")
     drone_sound.set_gain(0.1)
     drone_sound.play()
     drone_sound.set_looping(True)
