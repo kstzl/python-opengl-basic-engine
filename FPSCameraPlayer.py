@@ -39,7 +39,7 @@ class FPSCameraPlayer(Camera):
 
         sprint = 1
 
-        if keys[pg.K_LSHIFT]:
+        if keys[pg.K_LALT]:
             sprint = 3
 
         self.position = (

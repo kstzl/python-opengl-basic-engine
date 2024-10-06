@@ -15,22 +15,22 @@ class QuadGeometry(BaseGeometry):
         self.vtxc = VtxConstructor()
 
         # Vertex 0
-        self.vtxc.add_vertex(
+        self.vtxc.add_vertex_ex(
             x=-0.5, y=0.5, z=0.0, nx=0, ny=0, nz=1, r=1.0, g=1.0, b=1.0, u=0.0, v=1.0
         )
 
         # Vertex 1
-        self.vtxc.add_vertex(
+        self.vtxc.add_vertex_ex(
             x=0.5, y=0.5, z=0.0, nx=0, ny=0, nz=1, r=1.0, g=1.0, b=1.0, u=1.0, v=1.0
         )
 
         # Vertex 2
-        self.vtxc.add_vertex(
+        self.vtxc.add_vertex_ex(
             x=-0.5, y=-0.5, z=0.0, nx=0, ny=0, nz=1, r=1.0, g=1.0, b=1.0, u=0.0, v=0.0
         )
 
         # Vertex 3
-        self.vtxc.add_vertex(
+        self.vtxc.add_vertex_ex(
             x=0.5, y=-0.5, z=0.0, nx=0, ny=0, nz=1, r=1.0, g=1.0, b=1.0, u=1.0, v=0.0
         )
 

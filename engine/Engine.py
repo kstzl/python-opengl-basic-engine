@@ -80,6 +80,7 @@ class Engine:
         self.running = True
         while self.running:
             dt: float = self.clock.tick(120) / 1000
+            self.elapsed_time += dt
 
             self.process_events()
             self.execute_actors(dt)
@@ -106,19 +107,24 @@ class Engine:
 
         for actor in self.actors:
             if isinstance(actor, DrawableActor):
-                actor.material.use()
+                if actor.material is not None:
+                    actor.material.use()
 
-                actor.material.shader_program.set_matrix4fv_uniform(
-                    "viewMatrix", self.camera.get_view_matrix()
-                )
-                actor.material.shader_program.set_matrix4fv_uniform(
-                    "projectionMatrix", self.projection_matrix
-                )
+                    actor.material.shader_program.set_1f_uniform(
+                        "time", self.elapsed_time
+                    )
 
-                position_matrix = actor.get_model_matrix()
-                actor.material.shader_program.set_matrix4fv_uniform(
-                    "modelMatrix", position_matrix
-                )
+                    actor.material.shader_program.set_matrix4fv_uniform(
+                        "viewMatrix", self.camera.get_view_matrix()
+                    )
+                    actor.material.shader_program.set_matrix4fv_uniform(
+                        "projectionMatrix", self.projection_matrix
+                    )
+
+                    position_matrix = actor.get_model_matrix()
+                    actor.material.shader_program.set_matrix4fv_uniform(
+                        "modelMatrix", position_matrix
+                    )
 
                 actor.geometry.render()
 

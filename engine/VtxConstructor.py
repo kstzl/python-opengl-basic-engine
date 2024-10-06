@@ -8,7 +8,7 @@ class VtxConstructor:
         self.data = ()
         self.vtx_count = 0
 
-    def add_vertex(
+    def add_vertex_ex(
         self,
         x: float,
         y: float,
@@ -23,6 +23,10 @@ class VtxConstructor:
         v: float,
     ):
         self.data += (x, y, z, nx, ny, nz, r, g, b, u, v)
+        self.vtx_count += 1
+
+    def add_vertex(self, x: float, y: float, z: float):
+        self.data += (x, y, z)
         self.vtx_count += 1
 
     def as_np_f32_array(self):

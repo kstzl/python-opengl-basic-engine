@@ -5,6 +5,7 @@ class MapGenerator:
         self.sy = sy
 
     def get_pixel_at(self, x: int, y: int):
+        print(x, y)
         if 0 <= x < self.sx and 0 <= y < self.sy:
             return self.level[x + y * self.sy]
         return 0

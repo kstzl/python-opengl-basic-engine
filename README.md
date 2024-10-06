@@ -1,5 +1,4 @@
 # Python OpenGL Basic Engine
-![alt text](game-preview.gif)
 
 ## Introduction
 
@@ -11,8 +10,17 @@ git clone https://github.com/kstzl/python-opengl-basic-engine
 cd python-opengl-basic-engine
 pip install -r requirements.txt
 ```
-## Running the default game
+## Running the FPS Test Game
+![alt text](images/fps-game.gif)
 ```bash
-python ./main.py
+python ./runFPSGame.py
 ```
+Controls : W A S D
+
+## Running the Batch Rendering Test Game
+![Batch Rendering](images/batch-rendering-game.png)
+```bash
+python ./runBatchRenderingTests.py
+```
+
 Controls : W A S D
