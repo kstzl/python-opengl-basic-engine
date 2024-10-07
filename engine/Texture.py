@@ -36,6 +36,9 @@ class Texture:
         GL.glActiveTexture(GL.GL_TEXTURE0 + slot)
         GL.glBindTexture(GL.GL_TEXTURE_2D, self.texture_id)
 
+    def unbind(self):
+        GL.glBindTexture(GL.GL_TEXTURE_2D, 0)
+
     def destroy(self):
         print(f"    - Destroying Texture({self.texture_id})")
         GL.glDeleteTextures(1, (self.texture_id,))

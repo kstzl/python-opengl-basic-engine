@@ -8,20 +8,44 @@ in vec3 fragPos;
 out vec4 color;
 
 uniform sampler2D imageTexture;
+uniform sampler2D normalMap;
+
+uniform vec3 camPos;
+
+struct Light
+{
+    vec3 position;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
 
 void main()
 {
-    vec3 lightPos = vec3(2, 2, 5);
-    vec3 lightColor = vec3(0, 0.1, 0.2) * 0.2;
+    // Light
+    Light light = Light(vec3(2, 2, 4), vec3(0.5), vec3(0.2), vec3(0.5));
 
-    vec3 norm = normalize(normal);
-    vec3 lightDir = normalize(lightPos - fragPos);  
+    // Normal
+    vec3 normal_texture = texture(normalMap, fragTexCoord).rgb;
 
-    float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * lightColor;
+    vec3 Normal = normalize(normal_texture * 1);
 
-    vec3 result = (0.5 + diffuse) * fragmentColor;
+    // Ambient
+    vec3 ambient = light.ambient;
+
+    // Diffuse
+    vec3 lightDir = normalize(light.position - fragPos);
+    float diff = max(0, dot(lightDir, Normal));
+    vec3 diffuse = diff * light.diffuse;
+
+    // Specular
+    vec3 viewDir = normalize(camPos - fragPos);
+    vec3 reflectDir = reflect(-lightDir, Normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0), 32);
+    vec3 specular = spec * light.specular;
+
+    vec3 finalColor = vec3(1, 1, 1) * (ambient + diffuse + specular);
 
     float y = fragPos.y;
-    color = vec4(result, 1.0) * texture(imageTexture, fragTexCoord) - smoothstep(0.0, 4, y);
+    color = vec4(finalColor, 1.0) * texture(imageTexture, fragTexCoord) - smoothstep(0, 3.5, y);;
 }

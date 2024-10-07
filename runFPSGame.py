@@ -25,7 +25,9 @@ if __name__ == "__main__":
     )
     floor_material = engine_instance.register_material(
         Material(
-            shader_program=default_shader, texture=Texture("./assets/textures/tile.jpg")
+            shader_program=default_shader,
+            texture=Texture("./assets/textures/tile.jpg"),
+            normal_texture=Texture("./assets/textures/tile_normal.png"),
         )
     )
 
@@ -33,6 +35,7 @@ if __name__ == "__main__":
         Material(
             shader_program=default_shader,
             texture=Texture("./assets/textures/metrotile.jpg"),
+            normal_texture=Texture("./assets/textures/metrotile_normal.png"),
         )
     )
 
@@ -40,16 +43,47 @@ if __name__ == "__main__":
         Material(
             shader_program=default_shader,
             texture=Texture("./assets/textures/clock.png"),
+            normal_texture=Texture("./assets/textures/metrotile_normal.png"),
         )
     )
 
     level = [
-        1, 1, 1, 0, 0, 0,
-        0, 0, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 1,
-        0, 1, 1, 1, 0, 1,
-        0, 1, 1, 1, 1, 1,
-        0, 1, 1, 1, 0, 0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
     ]
 
     mp = MapGenerator(level=level, sx=6, sy=6)

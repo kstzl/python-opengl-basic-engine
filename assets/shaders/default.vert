@@ -20,5 +20,6 @@ void main() {
     fragmentColor = vertexColor;
     fragTexCoord = vertexCoord;
     fragPos = vec3(modelMatrix * vec4(vertexPos, 1.0));
-    normal = vertexNormal;
+
+    normal = mat3(transpose(inverse(modelMatrix))) * normalize(vertexNormal);
 } 

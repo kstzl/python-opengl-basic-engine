@@ -94,6 +94,7 @@ class Engine:
     def check_for_gl_error(self):
         error = GL.glGetError()
         if error != GL.GL_NO_ERROR:
+            print(type(error))
             print(f"OpenGL error: {error}")
 
     def execute_actors(self, dt: float):
@@ -108,12 +109,15 @@ class Engine:
         for actor in self.actors:
             if isinstance(actor, DrawableActor):
                 if actor.material is not None:
-                    actor.material.use()
+                    actor.material.bind()
 
                     actor.material.shader_program.set_1f_uniform(
                         "time", self.elapsed_time
                     )
 
+                    actor.material.shader_program.set_3f_uniform(
+                        "camPos", self.camera.position.tolist()
+                    )
                     actor.material.shader_program.set_matrix4fv_uniform(
                         "viewMatrix", self.camera.get_view_matrix()
                     )
@@ -127,5 +131,8 @@ class Engine:
                     )
 
                 actor.geometry.render()
+
+                if actor.material is not None:
+                    actor.material.unbind()
 
         pg.display.flip()

@@ -63,7 +63,7 @@ class BatchGeoTest(BaseGeometry):
         GL.glDrawElements(GL.GL_TRIANGLES, 6 * self.count, GL.GL_UNSIGNED_INT, ct.c_void_p(0))
 
     def get_geometry_name(self) -> str:
-        raise "QuadGeometry"
+        raise "BatchGeoTest"
 
     def destroy(self):
         self.vao.destroy()

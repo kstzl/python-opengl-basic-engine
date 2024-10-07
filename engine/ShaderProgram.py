@@ -11,12 +11,22 @@ class ShaderProgram:
         frag_shader_content = self.__get_file_data(frag_shader_path)
         vert_shader_content = self.__get_file_data(vert_shader_path)
 
-        self.vertex_shader = GLS.compileShader(vert_shader_content, GL.GL_VERTEX_SHADER)
-        self.fragment_shader = GLS.compileShader(
+        self.vertex_shader = self.try_compile_shader(
+            vert_shader_content, GL.GL_VERTEX_SHADER
+        )
+
+        self.fragment_shader = self.try_compile_shader(
             frag_shader_content, GL.GL_FRAGMENT_SHADER
         )
 
+        print("OK")
         self.program = GLS.compileProgram(self.vertex_shader, self.fragment_shader)
+
+    def try_compile_shader(self, shader_content: str, shader_kind: any):
+        try:
+            return GLS.compileShader(shader_content, shader_kind)
+        except GLS.ShaderCompilationError:
+            raise Exception("Engine Fatal Error : shader compilation error.")
 
     def set_matrix4fv_uniform(self, uniform_name: str, mtx: Matrix44):
         loc = self.get_uniform_loc(uniform_name)
@@ -29,6 +39,10 @@ class ShaderProgram:
     def set_1f_uniform(self, uniform_name, value: int):
         loc = self.get_uniform_loc(uniform_name)
         GL.glUniform1f(loc, value)
+
+    def set_3f_uniform(self, uniform_name, vec: [int]):
+        loc = self.get_uniform_loc(uniform_name)
+        GL.glUniform3f(loc, *vec)
 
     def get_uniform_loc(self, uniform_name: str):
         return GL.glGetUniformLocation(self.program, uniform_name)
